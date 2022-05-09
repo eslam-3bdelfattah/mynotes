@@ -35,60 +35,54 @@ class _RegisterViewState extends State<RegisterView> {
       appBar: AppBar(
         title: const Text('Register'),
       ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          //snapshot is the state of my futurebuilder (done - faild - none)
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
-                children: [
-                  //email field
-                  TextField(
-                    controller: email,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration:
-                        const InputDecoration(hintText: 'Enter you email'),
-                  ),
-                  //password field
-                  TextField(
-                    controller: password,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(hintText: 'Enter you password'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final userEmail = email.text;
-                      final userPassword = password.text;
-                      try {
-                        final userCredential = await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: userEmail, password: userPassword);
-                        print(userCredential);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          print('Weak password');
-                        } else if (e.code == 'email-already-in-use') {
-                          print('this email is already in use try another one');
-                        } else if (e.code == 'invalid-email') {
-                          print('this email is invalid');
-                        }
-                      }
-                    },
-                    child: const Text('Register'),
-                  ),
-                ],
+      body: Column(
+        children: [
+          //email field
+          TextField(
+            controller: email,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(hintText: 'Enter you email'),
+          ),
+          //password field
+          TextField(
+            controller: password,
+            autocorrect: false,
+            enableSuggestions: false,
+            obscureText: true,
+            decoration: const InputDecoration(hintText: 'Enter you password'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final userEmail = email.text;
+              final userPassword = password.text;
+              try {
+                final userCredential = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                        email: userEmail, password: userPassword);
+                print(userCredential);
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'weak-password') {
+                  print('Weak password');
+                } else if (e.code == 'email-already-in-use') {
+                  print('this email is already in use try another one');
+                } else if (e.code == 'invalid-email') {
+                  print('this email is invalid');
+                }
+              }
+            },
+            child: const Text('Register'),
+          ),
+          //button for login view
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                'login',
+                (route) => false,
               );
-              break;
-            default:
-              return const Text('Loading...');
-          }
-        },
+            },
+            child: const Text("Already have an account? Login here"),
+          )
+        ],
       ),
     );
   }
