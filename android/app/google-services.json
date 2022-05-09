@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "724146628311",
+    "project_id": "taking-notes-project",
+    "storage_bucket": "taking-notes-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724146628311:android:9409bcfae42b5ec8cf3292",
+        "android_client_info": {
+          "package_name": "com.example.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "724146628311-k1cfn5cl4ag6p0gijdgug3shvmu948jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoyybx91OQcPRYTyVSeQWGpYi0cBvDcxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "724146628311-k1cfn5cl4ag6p0gijdgug3shvmu948jf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
