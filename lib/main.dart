@@ -20,7 +20,7 @@ void main() async {
     routes: {
       'login': (context) => const LoginView(),
       'register': (context) => const RegisterView(),
-      //'logout':(context) =>
+      'notes': (context) => const NotesView(),
     },
   ));
 }
@@ -98,6 +98,9 @@ class _NotesViewState extends State<NotesView> {
         ],
         // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
       ),
+      body: Center(
+        child: const Text('Add a new note'),
+      ),
     );
   }
 }
@@ -119,7 +122,7 @@ Future<bool> showLogoutDialogBar(BuildContext context) {
             onPressed: () {
               Navigator.of(context).pop(true);
             },
-            child: Text('Sign out'))
+            child: const Text('Sign out'))
       ],
     ),
   ).then((value) => value ?? false);

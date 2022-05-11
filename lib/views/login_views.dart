@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:developer' as devTools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -57,18 +56,24 @@ class _LoginViewState extends State<LoginView> {
               final userEmail = email.text;
               final userPassword = password.text;
               try {
-                final userCredential = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: userEmail, password: userPassword);
-                print(userCredential);
-                print('the user Exists!');
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: userEmail, password: userPassword);
+                devTools.log('the user exists!');
+                //after you sign in successfully go to your notes
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  'notes',
+                  (route) => false,
+                );
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
-                  print('user is not found');
-                  print(e.code);
+                  //take the user to register an account because his account is not found
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    'register',
+                    (route) => false,
+                  );
+                  devTools.log('user is not found!');
                 } else if (e.code == 'wrong-password') {
-                  print('Wrong Password!');
-                  print(e.code);
+                  devTools.log('Wrong password.. type a correct password');
                 }
               }
             },
