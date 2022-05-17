@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/views/login_views.dart';
+import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/verify_email.dart';
-import '../main.dart';
 import '../views/register_view.dart';
 
 //here we will put all our routes to clean the main

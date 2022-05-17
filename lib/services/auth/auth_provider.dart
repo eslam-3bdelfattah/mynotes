@@ -2,6 +2,10 @@ import 'package:mynotes/services/auth/auth_user.dart';
 
 //this class will be the interface to all of our auth process
 abstract class AuthProvider {
+  //intialize firebase
+  Future<void> intialize();
+
+  //get current user
   AuthUser? get currentUser;
 
   //login

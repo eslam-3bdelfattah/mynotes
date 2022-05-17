@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:developer' as devTools show log;
 import 'package:mynotes/components/named_navigator.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import '../components/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -59,39 +59,29 @@ class _LoginViewState extends State<LoginView> {
               final userEmail = email.text;
               final userPassword = password.text;
               try {
-                final user = FirebaseAuth.instance.currentUser;
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: userEmail, password: userPassword);
+                final user = AuthService.firebase().currentUser;
+                await AuthService.firebase()
+                    .logIn(email: userEmail, password: userPassword);
                 //make sure that the user verifies his email before going to main view
-                if (user?.emailVerified ?? false) {
+                if (user?.isEmailVerified ?? false) {
                   namedNavigator(route: notesRoute, context: context);
                 } else {
                   namedNavigator(route: verifyRoute, context: context);
                 }
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'user-not-found') {
-                  //take the user to register an account because his account is not found
-                  //namedNavigator(route: registerRoute, context: context);
-                  showErrorDialog(
-                    context: context,
-                    errorText: 'User is not found',
-                  );
-                  devTools.log('user is not found!');
-                } else if (e.code == 'wrong-password') {
-                  devTools.log('Wrong password.. type a correct password');
-                  showErrorDialog(
-                      context: context,
-                      errorText: 'Wrong password, please enter a correct one');
-                } else {
-                  showErrorDialog(
-                    context: context,
-                    errorText: 'Error: ${e.code}',
-                  );
-                }
-              } catch (e) {
+              } on UserNotFoundAuthException {
                 showErrorDialog(
                   context: context,
-                  errorText: e.toString(),
+                  errorText: 'User is not found',
+                );
+              } on WrongPasswordAuthvException {
+                showErrorDialog(
+                  context: context,
+                  errorText: 'Wrong password, please enter a correct one',
+                );
+              } on GenericAuthExceptions {
+                showErrorDialog(
+                  context: context,
+                  errorText: 'Auth error!',
                 );
               }
             },
