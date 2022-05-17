@@ -59,11 +59,15 @@ class _LoginViewState extends State<LoginView> {
               final userEmail = email.text;
               final userPassword = password.text;
               try {
+                final user = FirebaseAuth.instance.currentUser;
                 await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: userEmail, password: userPassword);
-                devTools.log('the user exists!');
-                //after you sign in successfully go to your notes
-                namedNavigator(route: notesRoute, context: context);
+                //make sure that the user verifies his email before going to main view
+                if (user?.emailVerified ?? false) {
+                  namedNavigator(route: notesRoute, context: context);
+                } else {
+                  namedNavigator(route: verifyRoute, context: context);
+                }
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
                   //take the user to register an account because his account is not found
