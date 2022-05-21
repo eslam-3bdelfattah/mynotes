@@ -63,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
                 await AuthService.firebase()
                     .logIn(email: userEmail, password: userPassword);
                 //make sure that the user verifies his email before going to main view
-                if (user?.isEmailVerified ?? false) {
+                if (user!.isEmailVerified) {
                   namedNavigator(route: notesRoute, context: context);
                 } else {
                   namedNavigator(route: verifyRoute, context: context);
